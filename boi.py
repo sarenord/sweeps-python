@@ -10,8 +10,8 @@ class Boi:
         self.sector = boi_json.sectorID
         self.energy = boi_json.energy
                
-    def move(direction):
+    # def move(direction):
         
-    def detect(direction):
+    # def detect(direction):
 
-    def eat(direction):
+    # def eat(direction):

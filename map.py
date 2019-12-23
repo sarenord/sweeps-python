@@ -1,5 +1,5 @@
 import json, requests
-
+
 class Map:
     # needs map in json to init
     # TODO: minimize use of the /getMap endpoint to prevent CPU melting. Possibly cache some form of the map, but what data changes little enough to be worth caching?
@@ -18,3 +18,9 @@ class Map:
 class Sector:
     def __init__():
         
+
+    @property
+    def entities():
+
+
+    

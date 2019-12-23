@@ -46,10 +46,8 @@ class Sweeps:
         ar = []
         for i in self.boiz:
             ar += requests.put(constant.BASE_URL+"entities/"+id, data=json.dumps({"APIKey": self.key}))
-
         return ar
 
-    # TODO: get this working. currently gives a 415 error code for unknown reason.
     def createboi(self, x, y, sectorX, sectorY):
         body = json.dumps({"x": x, "y": y, "sectorX": sectorX, "sectorY": sectorY, "key": self.key})
         head = {"content-type": "application/json"}
