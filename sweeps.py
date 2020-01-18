@@ -3,6 +3,7 @@ import json
 import configparser
 import os
 import constant
+from constant import API_PATH
 
 class Sweeps:
     def __init__(self):
@@ -13,26 +14,56 @@ class Sweeps:
             self.key = config['User']['APIkey']
         else:
             print("Config.ini not found. Creating with default values and fresh API key\n")
-            APIKey = requests.get(constant.BASE_URL + "getNewAPIKey").json()
-            print(APIKey)
+            print("Please enter a username")
+            username = input()
+            print("Please enter your email")
+            email = input()
+            APIKey = requests.put(constant.BASE_URL + "getNewAPIKey", data=json.dumps({"email": email})).json()
             config.read('config.ini')
             config['User'] = {'APIKey': APIKey,
+                              'Username': username,
+                              'Email': email,
                               'bois': []}
 
             with open('config.ini', 'w') as configfile:
                 config.write(configfile)
 
-    def getmybois(self):
+
+    # method to avoid having to manually make requests in each class
+    # TODO: should this be static?
+    def apicall(self, endpoint, extension=None, sectorID=None, boiID=None, command=None, direction=None, headers=None):
+		path = constant.API_PATH[endpoint]
+        url = ""
+        body = {}
+		if headers == None:
+			headers = {"content-type": "application/json"}
+        if "{{key}}" in path:
+            url = constant.BASE_URL + path.format(self.key)
+        if "{{id}}" in path:
+            if endpoint == "command":
+                url = constant.BASE_URL + path.format(boiID)
+                body = json.dumps({"APIKey": selp.key, "direction": direction, "command": command})
+			if endpoint == "sector":
+				url = path.format(sectorID)
+				body =
+
+		err = requests.put(url, data=body, header=headers)
+
+
+
+
+
+    @staticmethod
+    def getmapsize():
+        m = requests.get(constant.BASE_URL + "getMap").json()
+        return m
+
+    @staticmethod
+    def getsector(x, y):
+        print(x + " " + y)
+
+    def getownedboiz(self):
         body = json.dumps({'key': self.APIKey})
         bois = requests.put(constant.BASE_URL + "getMyBois", body)
         self.bois = bois
         return bois
-
-    @staticmethod
-    @property
-    def worldmap():
-        m = requests.get(constant.BASE_URL + "getMap").json()
-
-        return m
-        
-

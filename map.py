@@ -1,20 +1,32 @@
-import json, requests
+from sweeps import Sweeps
+
 
 class Map:
-    # needs map in json to init
-    # TODO: minimize use of the /getMap endpoint to prevent CPU melting. Possibly cache some form of the map, but what data changes little enough to be worth caching?
+    def getSector(x, y):
+		SID = x + "." + y
+		Sweeps.apicall("sector", sectorID=SID)
 
-    # Is it even worth having this class be initialized? or should this just be a utility class
-    def __init__(self, map):
-        
-    # getSector won't be functional until we transition to [x].[y]-formatted sector ID system instead of (x, y) coordinates
-    def getSector(id):
-        body = json.dumps({'id': id})
-        s = requests.put(constants.BASE_URL + 'getSector', body)
-        return s
-        
-        
-# This class makes much more sense to instantiate
+    @staticmethod
+    @property
+    def worldmap():
+        return [idstring for x in ]
+
+
 class Sector:
-    def __init__():
-        
+    def __init__(self, sid=None, data=None):
+        if data != None:
+            self.data = data
+        elif id != None:
+                self.data = Sweeps.apicall("sector", sectorID=sid)
+
+    @property
+    def entities(self):
+        return self.data.entities
+
+    @property
+    def energy(self):
+        ar = []
+        for i in self.data.entities:
+            if i.type == "energy":
+                ar += i
+        return ar
